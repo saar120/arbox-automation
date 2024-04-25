@@ -1,21 +1,14 @@
 use serde_json::json;
 use std::result::Result;
 use std::string::String;
+use crate::api::models::LoginData;
+use super::models;
+
 
 pub struct ArboxAPI {
     base_url: String,
     client: reqwest::Client,
     token: Option<String>,
-}
-
-#[derive(serde::Deserialize)]
-struct LoginResponse {
-    data: LoginData,
-}
-
-#[derive(serde::Deserialize)]
-struct LoginData {
-    token: String,
 }
 
 impl ArboxAPI {
@@ -35,22 +28,21 @@ impl ArboxAPI {
         }
     }
 
-    // async fn get(&self, path: &str) -> Result<reqwest::Response, reqwest::Error> {
+    async fn get(&self, path: &str) -> Result<reqwest::Response, reqwest::Error> {
+        let mut req = self.client
+            .get(&format!("{}/{}", self.base_url, path))
+            .header("Content-Type", "application/json")
+            .header("User-Agent", "Arbox/4000531 CFNetwork/1494.0.7 Darwin/23.4.0")
+            .header("whitelabel", "Arbox")
+            .header("version", 11)
+            .header("referername", "app");
 
-    //     let mut req = self.client
-    //         .get(&format!("{}/{}", self.base_url, path))
-    //         .header("Content-Type", "application/json")
-    //         .header("User-Agent", "Arbox/4000531 CFNetwork/1494.0.7 Darwin/23.4.0")
-    //         .header("whitelabel", "Arbox")
-    //         .header("version", 11)
-    //         .header("referername", "app");
+        if self.token.is_some() {
+            req = req.header("accesstoken", self.token.as_ref().unwrap());
+        }
 
-    //     if self.token.is_some() {
-    //         req = req.header("accesstoken", self.token.as_ref().unwrap());
-    //     }
-
-    //     req.send().await
-    // }
+        req.send().await
+    }
 
     async fn post(&self, path: &str, body: &str) -> Result<reqwest::Response, reqwest::Error> {
         let mut req = self
@@ -84,11 +76,18 @@ impl ArboxAPI {
         let res: reqwest::Response = self.post("user/login", &body.to_string()).await?;
 
         if let Ok(body) = res.text().await {
-            let login_res: LoginResponse = serde_json::from_str(&body)?;
+            let login_res: models::Response<LoginData> = serde_json::from_str(&body)?;
             self.token = Some(login_res.data.token.clone());
             Ok(())
         } else {
             Err("Failed to load token".into())
         }
+    }
+
+    pub async fn get_profile(&self) -> Result<models::Response<models::ProfileData>, Box<dyn std::error::Error>> {
+        let res = self.get("user/profile").await?;
+        let body = res.text().await?;
+        let profile_res: models::Response<models::ProfileData> = serde_json::from_str(&body)?;
+        Ok(profile_res)
     }
 }

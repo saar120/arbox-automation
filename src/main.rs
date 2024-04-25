@@ -13,4 +13,8 @@ async fn main() {
 
     let mut arbox = api::arbox_api::ArboxAPI::new();
     arbox.init(&*email, &*password).await;
+
+    let profile = arbox.get_profile().await;
+
+    print!("{:?}", profile)
 }

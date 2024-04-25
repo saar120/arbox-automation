@@ -22,6 +22,7 @@ name = "arbox_automation"
 version = "0.1.0"
 dependencies = [
  "dotenv",
+ "log",
  "reqwest",
  "serde",
  "serde_json",
