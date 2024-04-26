@@ -23,8 +23,8 @@ impl ArboxAPI {
     pub async fn init(&mut self, email: &str, password: &str) {
         let res = self.load_token(email, password).await;
         match res {
-            Ok(_) => println!("Token loaded"),
-            Err(e) => println!("Error: {}", e),
+            Ok(_) => println!("API initiated successfully"),
+            Err(e) => println!("Error initiating API: {}", e),
         }
     }
 
