@@ -11,6 +11,7 @@ async fn main() {
     let email = env::var("ARBOX_EMAIL").expect("ARBOX_EMAIL must be set");
     let password = env::var("ARBOX_PASSWORD").expect("ARBOX_PASSWORD must be set");
 
+
     let mut arbox = api::arbox_api::ArboxAPI::new();
     arbox.init(&*email, &*password).await;
 
