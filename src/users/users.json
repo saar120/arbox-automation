@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Saar Amrani",
+    "box_info": {
+      "id": 1,
+      "tz": "Asia/Jerusalem",
+      "location": "Tel Aviv",
+      "lessons_open_type": "TwentyFourHours"
+    },
+    "schedule": [
+      {
+        "day": "monday",
+        "time": "01:10"
+      },
+      {
+        "day": "monday",
+        "time": "01:20"
+      },
+      {
+        "day": "monday",
+        "time": "07:00"
+      }
+    ]
+  }
+]

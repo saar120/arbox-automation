@@ -1,6 +1,7 @@
 use serde_json::json;
 use std::result::Result;
 use std::string::String;
+use log::{error, info};
 use crate::api::models::LoginData;
 use super::models;
 
@@ -23,8 +24,8 @@ impl ArboxAPI {
     pub async fn init(&mut self, email: &str, password: &str) {
         let res = self.load_token(email, password).await;
         match res {
-            Ok(_) => println!("API initiated successfully"),
-            Err(e) => println!("Error initiating API: {}", e),
+            Ok(_) => info!("API initiated successfully for user {}", email),
+            Err(e) => error!("Error initiating API: {}", e),
         }
     }
 
