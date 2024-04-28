@@ -29,5 +29,8 @@ RUN apt-get update && apt-get install -y \
  && rm -rf /var/lib/apt/lists/* \
     && update-ca-certificates
 
+# Expose the port your app runs on
+EXPOSE 8080
+
 # Set the CMD to your app \
     CMD ["arbox_automation"]

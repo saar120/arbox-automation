@@ -3,6 +3,7 @@ use std::time::Duration;
 use clokwerk::{Job, Scheduler, TimeUnits};
 use log::{error, info};
 use crate::utils::date_time::{get_day, get_day_before};
+use crate::utils::health_check::start_tcp_server;
 
 mod api;
 mod users;
@@ -13,8 +14,10 @@ async fn main() {
     dotenv().ok();
     utils::logger::setup_logger();
 
-    tokio::spawn(async {
-        utils::health_check::start_tcp_health_check_server().await;
+    let server_task = tokio::spawn(async {
+        if let Err(e) = start_tcp_server("0.0.0.0:8080").await {
+            error!("Failed to run TCP server: {}", e);
+        }
     });
 
     info!("Starting the scheduler");
