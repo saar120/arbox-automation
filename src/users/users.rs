@@ -4,12 +4,14 @@ use crate::api;
 use crate::users::models::User;
 
 pub fn load_users_from_json() -> Vec<User> {
+
     // load users.json
-    let users_json = fs::read_to_string("./src/users/users.json");
+    let users_json = fs::read_to_string("users.json");
     let users_json = match users_json {
         Ok(json) => json,
         Err(e) => {
-            panic!("Error reading users.json: {}", e);
+            error!("Error reading users.json: {:?}", e);
+            return Vec::new();
         }
     };
     let users: Vec<User> = serde_json::from_str(&users_json).expect("Error parsing users.json");

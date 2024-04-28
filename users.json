@@ -11,15 +11,15 @@
     "schedule": [
       {
         "day": "monday",
-        "time": "01:10"
+        "time": "16:50"
       },
       {
         "day": "monday",
-        "time": "01:20"
+        "time": "17:10"
       },
       {
         "day": "monday",
-        "time": "07:00"
+        "time": "20:00"
       }
     ]
   }
