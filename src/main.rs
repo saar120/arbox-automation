@@ -13,6 +13,10 @@ async fn main() {
     dotenv().ok();
     utils::logger::setup_logger();
 
+    tokio::spawn(async {
+        utils::health_check::start_tcp_health_check_server().await;
+    });
+
     info!("Starting the scheduler");
 
     let mut scheduler = Scheduler::with_tz(chrono_tz::Asia::Jerusalem);
